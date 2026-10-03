@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi 1er Cumpleaños - Celeste</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Great+Vibes&family=Montserrat:wght@500;700;800&family=Playfair+Display:ital,wght@0,600;1,400;1,600&display=swap" rel="stylesheet">
+    
+    <script>
+        function handleImageError(img, placeholderId) {
+            if (img) img.style.display = 'none';
+            var ph = document.getElementById(placeholderId);
+            if (ph) ph.style.display = 'flex';
+        }
+    </script>
+
+    <style>
+        :root {
+            --purple-deep: #4c1d95;
+            --purple-mid: #7e22ce;
+            --purple-light: #a855f7;
+            --purple-soft: #d8b4fe;
+            --pink-glow: #e879f9;
+            --pink-soft: #f472b6;
+            --bg-grad-start: #f7e8ff;
+            --bg-grad-end: #f5e8ff;
+            --gold-accent: #facc15;
+            --gold-shadow: rgba(250, 204, 21, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            background: #2a0845;
+            background: radial-gradient(circle at center, #3b1359 0%, #1a022d 100%);
+            font-family: 'Playfair Display', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px 10px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Canvas for Interactive Sparkle Cursor Trail */
+        #trail-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* CARCASA PRINCIPAL CON BRILLO LUZ ROSADO-MORADO EN BORDES */
+        .invitation-wrapper {
+            background: linear-gradient(180deg, #fbf2ff 0%, #f6e5ff 20%, #ffffff 50%, #f7e8ff 100%);
+            width: 100%;
+            max-width: 460px;
+            border-radius: 36px;
+            padding: 45px 22px 110px;
+            position: relative;
+            text-align: center;
+            overflow: hidden;
+            border: 4px solid var(--pink-soft);
+            box-shadow: 
+                0 0 25px rgba(244, 114, 182, 0.8),
+                0 0 50px rgba(232, 121, 249, 0.6),
+                0 0 80px rgba(168, 85, 247, 0.5),
+                inset 0 0 20px rgba(244, 114, 182, 0.35);
+            animation: pinkPurpleAura 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes pinkPurpleAura {
+            0% {
+                border-color: #f472b6;
+                box-shadow: 
+                    0 0 20px rgba(244, 114, 182, 0.8),
+                    0 0 40px rgba(232, 121, 249, 0.6),
+                    0 0 65px rgba(168, 85, 247, 0.5),
+                    inset 0 0 15px rgba(244, 114, 182, 0.3);
+            }
+            100% {
+                border-color: #c084fc;
+                box-shadow: 
+                    0 0 35px rgba(232, 121, 249, 0.95),
+                    0 0 65px rgba(168, 85, 247, 0.75),
+                    0 0 95px rgba(244, 114, 182, 0.65),
+                    inset 0 0 25px rgba(232, 121, 249, 0.45);
+            }
+        }
+
+        .dashed-border-outer {
+            position: absolute;
+            top: 12px; left: 12px; right: 12px; bottom: 12px;
+            border: 2px dashed #e879f9;
+            border-radius: 28px;
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0.85;
+            box-shadow: 0 0 10px rgba(232, 121, 249, 0.4);
+        }
+
+        /* MUSIC TOGGLE BUTTON */
+        .music-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 30;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            border: 2px solid #e879f9;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 0 12px rgba(232, 121, 249, 0.5);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .music-toggle:hover {
+            transform: scale(1.1);
+            background: #ffffff;
+            border-color: #f472b6;
+            box-shadow: 0 0 18px rgba(244, 114, 182, 0.8);
+        }
+
+        .music-toggle span {
+            font-size: 1.2rem;
+            animation: notePulse 2s infinite ease-in-out;
+        }
+
+        @keyframes notePulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.15) rotate(12deg); }
+        }
+
+        .header-story {
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .story-once {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3rem;
+            color: #6b21a8;
+            display: block;
+            margin-bottom: -6px;
+            text-shadow: 0 2px 10px rgba(232, 121, 249, 0.3);
+        }
+
+        .story-intro-text {
+            font-size: 0.9rem;
+            color: #581c87;
+            font-style: italic;
+            line-height: 1.6;
+            padding: 0 12px;
+        }
+
+        .main-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 5rem;
+            line-height: 1.15;
+            margin: 12px 0 5px;
+            padding-top: 5px;
+            background: linear-gradient(180deg, #e879f9 0%, #9333ea 45%, #4c1d95 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            display: block;
+            filter: drop-shadow(0 3px 6px rgba(168, 85, 247, 0.4));
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            0% { filter: drop-shadow(0 3px 8px rgba(244, 114, 182, 0.4)); }
+            100% { filter: drop-shadow(0 4px 16px rgba(232, 121, 249, 0.8)); }
+        }
+
+        .badge-pill {
+            display: inline-block;
+            background: linear-gradient(90deg, #9333ea 0%, #e879f9 100%);
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 800;
+            padding: 8px 22px;
+            border-radius: 20px;
+            letter-spacing: 1.2px;
+            box-shadow: 0 0 15px rgba(232, 121, 249, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .story-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            border-radius: 24px;
+            padding: 24px 20px;
+            position: relative;
+            z-index: 5;
+            border: 2px solid #e879f9;
+            box-shadow: 0 0 18px rgba(232, 121, 249, 0.25), 0 10px 25px rgba(147, 51, 234, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .story-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(244, 114, 182, 0.4), 0 15px 32px rgba(147, 51, 234, 0.15);
+        }
+
+        .chapter-tag {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #e879f9;
+            font-weight: 800;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .chapter-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            color: #4c1d95;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .story-body {
+            font-size: 0.88rem;
+            color: #6b21a8;
+            font-style: italic;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        /* MAGICAL CHAPTER CONNECTORS */
+        .chapter-connector {
+            position: relative;
+            height: 75px;
+            width: 100%;
+            margin: 4px 0;
+            z-index: 4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .connector-svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        .connector-path {
+            fill: none;
+            stroke: url(#connectorGradient);
+            stroke-width: 3;
+            stroke-dasharray: 8 6;
+            animation: flowDash 15s linear infinite;
+        }
+
+        @keyframes flowDash {
+            to { stroke-dashoffset: -200; }
+        }
+
+        .connector-star {
+            fill: #facc15;
+            filter: drop-shadow(0 0 6px #facc15);
+            animation: pulseStar 2s infinite ease-in-out alternate;
+        }
+
+        @keyframes pulseStar {
+            0% { transform: scale(0.8); opacity: 0.7; }
+            100% { transform: scale(1.2); opacity: 1; }
+        }
+
+        .book-frame {
+            position: relative;
+            background: #ffffff;
+            padding: 8px;
+            border-radius: 20px;
+            border: 1.5px solid #f472b6;
+            box-shadow: 0 0 12px rgba(244, 114, 182, 0.3);
+        }
+
+        .book-page {
+            display: none;
+            width: 100%;
+        }
+
+        .book-page.active {
+            display: block;
+            animation: fadeIn 0.4s cubic-bezier(0.39, 0.575, 0.565, 1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0.2; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .img-wrapper {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            background-color: #f3e8ff;
+        }
+
+        .img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .img-wrapper:hover img {
+            transform: scale(1.04);
+        }
+
+        .photo-placeholder {
+            width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #f5e8ff 0%, #e9d5ff 100%);
+            color: #7e22ce;
+        }
+
+        .photo-placeholder span { font-size: 2.8rem; margin-bottom: 6px; }
+        .photo-placeholder p { font-weight: 700; font-size: 0.85rem; letter-spacing: 1px; }
+
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid #e879f9;
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            color: #6b21a8;
+            font-size: 1.1rem;
+            box-shadow: 0 0 10px rgba(232, 121, 249, 0.4);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .arrow:hover {
+            background: #ffffff;
+            transform: translateY(-50%) scale(1.1);
+            color: #9333ea;
+            box-shadow: 0 0 15px rgba(244, 114, 182, 0.6);
+        }
+
+        .arrow.left { left: 12px; }
+        .arrow.right { right: 12px; }
+
+        .slider-dots {
+            margin-top: 12px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 10px; height: 10px;
+            background: #d8c4eb;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .dot.active {
+            background: #e879f9;
+            box-shadow: 0 0 8px #e879f9;
+            width: 24px;
+            border-radius: 6px;
+        }
+
+        /* INFO BOXES */
+        .info-box {
+            display: flex;
+            align-items: center;
+            background: #faf5ff;
+            border: 1px dashed #e879f9;
+            border-radius: 16px;
+            padding: 14px 16px;
+            text-align: left;
+            gap: 14px;
+            box-shadow: 0 0 10px rgba(232, 121, 249, 0.15);
+        }
+
+        .info-icon { font-size: 1.6rem; }
+
+        .info-details strong {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            color: #4c1d95;
+            display: block;
+            letter-spacing: 0.5px;
+        }
+
+        .info-details p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.74rem;
+            color: #7e22ce;
+            margin-top: 3px;
+        }
+
+        .dress-code-box {
+            margin-top: 14px;
+            background: #f3e8ff;
+            border-radius: 14px;
+            padding: 12px 16px;
+            border: 1px solid #e879f9;
+            box-shadow: 0 0 10px rgba(232, 121, 249, 0.15);
+        }
+
+        .dress-code-box span {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #581c87;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .dress-code-box p {
+            font-size: 0.8rem;
+            color: #6b21a8;
+            font-style: italic;
+        }
+
+        .final-card {
+            background: linear-gradient(180deg, #ffffff 0%, #faf0ff 100%);
+            border: 2px solid #f472b6;
+            box-shadow: 0 0 20px rgba(244, 114, 182, 0.3);
+        }
+
+        .whatsapp-btn {
+            background: linear-gradient(135deg, #a855f7 0%, #e879f9 100%);
+            color: #ffffff;
+            border: none;
+            width: 100%;
+            padding: 16px 14px;
+            border-radius: 24px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(232, 121, 249, 0.5), 0 8px 22px rgba(126, 34, 206, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .whatsapp-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 0 28px rgba(244, 114, 182, 0.7), 0 12px 28px rgba(126, 34, 206, 0.45);
+        }
+
+        .whatsapp-btn:active {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        .whatsapp-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(60deg, transparent, rgba(255,255,255,0.4), transparent);
+            transform: rotate(30deg);
+            animation: shineBtn 4s infinite;
+        }
+
+        @keyframes shineBtn {
+            0% { transform: translate(-100%, -100%) rotate(30deg); }
+            20%, 100% { transform: translate(100%, 100%) rotate(30deg); }
+        }
+
+        .deadline-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.68rem;
+            color: #7e22ce;
+            margin-top: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* DECORATIONS & BUTTERFLIES */
+        .bottom-decor {
+            position: absolute;
+            bottom: 10px;
+            z-index: 4;
+            pointer-events: none;
+        }
+
+        .bottom-left-decor {
+            left: 8px;
+            width: 95px;
+            height: 95px;
+            filter: drop-shadow(0 0 10px rgba(232, 121, 249, 0.5));
+        }
+
+        .bottom-right-decor {
+            right: 8px;
+            width: 105px;
+            height: 120px;
+            filter: drop-shadow(0 0 15px rgba(244, 114, 182, 0.6));
+            animation: fairyFloat 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes fairyFloat {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-8px) rotate(3deg); }
+        }
+
+        .floral-corner, .floral-edge {
+            position: absolute;
+            z-index: 3;
+            pointer-events: none;
+            opacity: 0.85;
+        }
+
+        .top-left-floral { top: 0; left: 0; width: 95px; height: 95px; }
+        .top-right-floral { top: 0; right: 0; width: 95px; height: 95px; }
+
+        .floating-butterfly {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            z-index: 6;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            animation: butterflyFlap 3s ease-in-out infinite alternate;
+            filter: drop-shadow(0 0 6px rgba(232, 121, 249, 0.6));
+        }
+
+        .floating-butterfly:hover {
+            transform: scale(1.3) rotate(15deg);
+        }
+
+        @keyframes butterflyFlap {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-10px) rotate(8deg); }
+        }
+
+        .b-top-left { top: 20px; left: 22px; }
+        .b-top-right { top: 22px; right: 65px; }
+        .b-mid-left { top: 380px; left: 8px; }
+        .b-mid-right { top: 720px; right: 8px; }
+        .b-lower-left { top: 1080px; left: 10px; }
+    </style>
+</head>
+<body>
+
+    <!-- Canvas for Cursor Fairy Wand Effect -->
+    <canvas id="trail-canvas"></canvas>
+
+    <div class="invitation-wrapper">
+        <div class="dashed-border-outer"></div>
+
+        <!-- AUDIO TOGGLE BUTTON & AUDIO ELEMENT -->
+        <button class="music-toggle" id="musicToggle" title="Activar/Desactivar Música y Sonidos" onclick="toggleAudio()">
+            <span id="musicIcon">🎵</span>
+        </button>
+
+        <audio id="bgMusic" loop preload="auto">
+            <source src="assets/musica1.mp3" type="audio/mpeg">
+            <source src="assets/musica1.wav" type="audio/wav">
+            <source src="assets/musica1.ogg" type="audio/ogg">
+            <source src="musica1.mp3" type="audio/mpeg">
+            <source src="musica1.wav" type="audio/wav">
+        </audio>
+
+        <!-- INTERACTIVE FLOATING BUTTERFLIES -->
+        <div class="floating-butterfly b-top-left" onclick="popSparkles(event)">
+            <svg viewBox="0 0 50 50">
+                <path d="M25,25 C10,5 0,20 10,30 C18,38 25,28 25,25 Z" fill="#f472b6"/>
+                <path d="M25,25 C40,5 50,20 40,30 C32,38 25,28 25,25 Z" fill="#e879f9"/>
+                <line x1="25" y1="15" x2="25" y2="35" stroke="#3c096c" stroke-width="2"/>
+            </svg>
+        </div>
+
+        <div class="floating-butterfly b-top-right" onclick="popSparkles(event)">
+            <svg viewBox="0 0 50 50">
+                <path d="M25,25 C10,5 0,20 10,30 C18,38 25,28 25,25 Z" fill="#e0aaff"/>
+                <path d="M25,25 C40,5 50,20 40,30 C32,38 25,28 25,25 Z" fill="#f472b6"/>
+                <line x1="25" y1="15" x2="25" y2="35" stroke="#3c096c" stroke-width="2"/>
+            </svg>
+        </div>
+
+        <div class="floating-butterfly b-mid-left" onclick="popSparkles(event)">
+            <svg viewBox="0 0 50 50">
+                <path d="M25,25 C10,5 0,20 10,30 C18,38 25,28 25,25 Z" fill="#d8b4fe"/>
+                <path d="M25,25 C40,5 50,20 40,30 C32,38 25,28 25,25 Z" fill="#e879f9"/>
+                <line x1="25" y1="15" x2="25" y2="35" stroke="#581c87" stroke-width="2"/>
+            </svg>
+        </div>
+
+        <div class="floating-butterfly b-mid-right" onclick="popSparkles(event)">
+            <svg viewBox="0 0 50 50">
+                <path d="M25,25 C10,5 0,20 10,30 C18,38 25,28 25,25 Z" fill="#f472b6"/>
+                <path d="M25,25 C40,5 50,20 40,30 C32,38 25,28 25,25 Z" fill="#a855f7"/>
+                <line x1="25" y1="15" x2="25" y2="35" stroke="#312e81" stroke-width="2"/>
+            </svg>
+        </div>
+
+        <div class="floating-butterfly b-lower-left" onclick="popSparkles(event)">
+            <svg viewBox="0 0 50 50">
+                <path d="M25,25 C10,5 0,20 10,30 C18,38 25,28 25,25 Z" fill="#f472b6"/>
+                <path d="M25,25 C40,5 50,20 40,30 C32,38 25,28 25,25 Z" fill="#c084fc"/>
+                <line x1="25" y1="15" x2="25" y2="35" stroke="#701a75" stroke-width="2"/>
+            </svg>
+        </div>
+
+        <!-- FLORAL CORNERS -->
+        <div class="floral-corner top-left-floral">
+            <svg viewBox="0 0 120 120">
+                <path d="M0,0 Q60,15 90,80" fill="none" stroke="#65a30d" stroke-width="3"/>
+                <path d="M10,8 Q40,5 60,30 Q30,38 10,8 Z" fill="#84cc16"/>
+                <path d="M35,22 Q65,20 75,50 Q48,52 35,22 Z" fill="#22c55e"/>
+                <circle cx="20" cy="18" r="8" fill="#f472b6"/>
+                <circle cx="20" cy="18" r="3" fill="#fef08a"/>
+                <circle cx="45" cy="35" r="11" fill="#e879f9"/>
+                <circle cx="45" cy="35" r="4" fill="#ffffff"/>
+            </svg>
+        </div>
+
+        <div class="floral-corner top-right-floral">
+            <svg viewBox="0 0 120 120">
+                <path d="M120,0 Q60,15 30,80" fill="none" stroke="#65a30d" stroke-width="3"/>
+                <path d="M110,8 Q80,5 60,30 Q90,38 110,8 Z" fill="#e879f9"/>
+                <path d="M85,22 Q55,20 45,50 Q72,52 85,22 Z" fill="#4ade80"/>
+                <circle cx="100" cy="18" r="9" fill="#f472b6"/>
+                <circle cx="100" cy="18" r="3" fill="#ffffff"/>
+                <circle cx="75" cy="35" r="11" fill="#c084fc"/>
+                <circle cx="75" cy="35" r="4" fill="#fef08a"/>
+            </svg>
+        </div>
+
+        <!-- PORTADA Y PRESENTACIÓN -->
+        <header class="header-story">
+            <span class="story-once">Había una vez...</span>
+            <p class="story-intro-text">
+                En un rincón mágico del bosque encantado, nació una pequeña princesa que llenó nuestras vidas de luz, sonrisas y alegría infinita.
+            </p>
+            
+            <h1 class="main-title">Celeste</h1>
+            <div class="badge-pill">✨ ¡CUMPLE SU 1ER AÑITO! ✨</div>
+        </header>
+
+        <!-- CAPÍTULO 1: ÁLBUM DE FOTOS -->
+        <div class="story-card">
+            <span class="chapter-tag">Capítulo I</span>
+            <h2 class="chapter-title">"El Paso del Tiempo"</h2>
+            <p class="story-body">
+                Mira cómo ha crecido nuestra pequeña princesa durante este primer año lleno de aventuras y tiernos momentos:
+            </p>
+
+            <div class="book-frame">
+                <!-- Foto 1 -->
+                <div class="book-page active" id="page1">
+                    <div class="img-wrapper">
+                        <img src="assets/foto.jpg" alt="Foto 1 de Celeste" onerror="handleImageError(this, 'placeholder1')">
+                        <div id="placeholder1" class="photo-placeholder" style="display: none;">
+                            <span>👑</span>
+                            <p>PRIMERA FOTO</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Foto 2 -->
+                <div class="book-page" id="page2">
+                    <div class="img-wrapper">
+                        <img src="assets/foto2.jpg" alt="Foto 2 de Celeste" onerror="handleImageError(this, 'placeholder2')">
+                        <div id="placeholder2" class="photo-placeholder" style="display: none;">
+                            <span>💖</span>
+                            <p>SEGUNDA FOTO</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="arrow left" onclick="changeSlide(-1)">&#10094;</button>
+                <button class="arrow right" onclick="changeSlide(1)">&#10095;</button>
+            </div>
+
+            <div class="slider-dots">
+                <span class="dot active" id="dot1" onclick="showSlide(1)"></span>
+                <span class="dot" id="dot2" onclick="showSlide(2)"></span>
+            </div>
+        </div>
+
+        <!-- MAGICAL CONNECTOR 1: STARDUST TRAIL -->
+        <div class="chapter-connector">
+            <svg class="connector-svg" viewBox="0 0 300 70">
+                <defs>
+                    <linearGradient id="connectorGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#f472b6" stop-opacity="0.3"/>
+                        <stop offset="50%" stop-color="#e879f9" stop-opacity="0.95"/>
+                        <stop offset="100%" stop-color="#a855f7" stop-opacity="0.3"/>
+                    </linearGradient>
+                </defs>
+                <!-- S-Curve Trail -->
+                <path class="connector-path" d="M 150,0 C 150,30 50,20 50,40 C 50,60 150,40 150,70" />
+                <!-- Sparkling Stars Along Path -->
+                <polygon class="connector-star" points="50,40 52,43 56,44 53,46 54,50 50,47 46,50 47,46 44,44 48,43" />
+                <polygon class="connector-star" points="150,35 151,37 154,38 152,39 152,42 150,40 148,42 148,39 146,38 149,37" style="animation-delay: 0.7s;" />
+                <circle cx="100" cy="30" r="2.5" fill="#fef08a" />
+                <circle cx="200" cy="45" r="3" fill="#f472b6" />
+            </svg>
+        </div>
+
+        <!-- CAPÍTULO 2: FECHA Y HORA -->
+        <div class="story-card">
+            <span class="chapter-tag">Capítulo II</span>
+            <h2 class="chapter-title">"La Cita Real"</h2>
+            <p class="story-body">
+                Un día tan radiante como este no sucede por casualidad; las criaturas del bosque han anunciado que las estrellas se alinearán para celebrar el primer año de sonrisas, descubrimientos y risas de Celeste. ¡Será un día de fiesta, magia y recuerdos que guardaremos para siempre en el corazón!
+            </p>
+            <div class="info-box">
+                <span class="info-icon">📅</span>
+                <div class="info-details">
+                    <strong>SÁBADO, 18 DE OCTUBRE</strong>
+                    <p>La magia comienza a las 3:30 PM</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAGICAL CONNECTOR 2: ENCHANTED VINE & BLOOMING FLOWERS -->
+        <div class="chapter-connector">
+            <svg class="connector-svg" viewBox="0 0 300 70">
+                <!-- Vine Trail -->
+                <path class="connector-path" d="M 150,0 C 150,30 250,20 250,40 C 250,60 150,40 150,70" />
+                <path d="M 250,40 Q 260,30 270,35" fill="none" stroke="#22c55e" stroke-width="2"/>
+                <circle cx="270" cy="35" r="4" fill="#f472b6"/>
+                <circle cx="250" cy="40" r="5" fill="#fef08a" />
+                <polygon class="connector-star" points="200,30 201,32 204,33 202,34 202,37 200,35 198,37 198,34 196,33 199,32" style="animation-delay: 1.2s;" />
+            </svg>
+        </div>
+
+        <!-- CAPÍTULO 3: UBICACIÓN Y DRESS CODE -->
+        <div class="story-card">
+            <span class="chapter-tag">Capítulo III</span>
+            <h2 class="chapter-title">"El Bosque Encantado"</h2>
+            <p class="story-body">
+                Dicen las antiguas leyendas que, entre susurros de viento y destellos de luces, existe un claro secreto en el bosque donde las flores cantan y el tiempo se detiene para celebrar la vida. Allí, bajo un manto de estrellas y rodeados de magia pura, celebraremos el primer gran capítulo de nuestra pequeña princesa.
+            </p>
+            
+            <div class="info-box">
+                <span class="info-icon">📍</span>
+                <div class="info-details">
+                    <strong>JARDÍN MÁGICO "LAS TERRAZAS"</strong>
+                    <p>Av. Principal del Bosque Encantado #456</p>
+                </div>
+            </div>
+
+            <div class="dress-code-box">
+                <span>👗 Código de Vestimenta</span>
+                <p>Te invitamos a vestir con tonos lilas, pasteles o tu mejor atuendo festivo.</p>
+            </div>
+        </div>
+
+        <!-- MAGICAL CONNECTOR 3: GOLDEN DUST & FAIRY TRAIL -->
+        <div class="chapter-connector">
+            <svg class="connector-svg" viewBox="0 0 300 70">
+                <path class="connector-path" d="M 150,0 C 150,35 150,35 150,70" stroke="#facc15" stroke-width="2.5" />
+                <polygon class="connector-star" points="150,35 153,39 158,40 154,43 155,48 150,45 145,48 146,43 142,40 147,39" />
+                <circle cx="150" cy="18" r="2" fill="#ffffff"/>
+                <circle cx="150" cy="55" r="2.5" fill="#ffffff"/>
+            </svg>
+        </div>
+
+        <!-- CAPÍTULO FINAL: RSVP (CON HISTORIA CREATIVA) -->
+        <div class="story-card final-card">
+            <span class="chapter-tag">El Gran Final</span>
+            <h2 class="chapter-title">"Un Deseo Hecho Realidad"</h2>
+            <p class="story-body">
+                Toda gran historia en el bosque encantado necesita de seres especiales que completen la magia. Para que el primer cuento de nuestra princesa Celeste sea verdaderamente perfecto y esté lleno de sonrisas memorables, ¡solo nos faltas tú! Tu presencia es el mejor regalo que el destino puede concedernos para celebrar este feliz viaje.
+            </p>
+
+            <button id="rsvp-btn" class="whatsapp-btn" onclick="handleRSVP(event)">
+                <span>💬</span> CONFIRMAR MI ASISTENCIA
+            </button>
+            <p class="deadline-text">Por favor confirma antes del 10 de Octubre</p>
+        </div>
+
+        <!-- BOTTOM DECORATIONS: MUSHROOMS & FAIRY -->
+        <div class="bottom-decor bottom-left-decor">
+            <svg viewBox="0 0 100 100">
+                <path d="M 30 90 L 35 55 Q 35 50 40 50 Q 45 50 45 55 L 50 90 Z" fill="#e8d8f8"/>
+                <path d="M 15 55 Q 40 15 65 55 Q 40 60 15 55 Z" fill="#802bb4"/>
+                <circle cx="30" cy="38" r="3.5" fill="#ffffff" opacity="0.9"/>
+                <circle cx="48" cy="42" r="2.5" fill="#ffffff" opacity="0.9"/>
+                <circle cx="38" cy="28" r="3" fill="#ffffff" opacity="0.9"/>
+                
+                <path d="M 55 90 L 58 68 Q 58 65 62 65 Q 66 65 66 68 L 70 90 Z" fill="#f3e8ff"/>
+                <path d="M 45 68 Q 62 38 80 68 Q 62 72 45 68 Z" fill="#e879f9"/>
+                <circle cx="62" cy="54" r="2" fill="#ffffff" opacity="0.9"/>
+
+                <!-- Cute Snail -->
+                <path d="M 38 25 C 32 18 20 25 24 33 C 28 38 38 33 34 26 C 32 23 27 26 28 29" fill="none" stroke="#d97706" stroke-width="3" stroke-linecap="round"/>
+                <path d="M 18 36 Q 28 32 40 34 Q 44 32 46 29 C 47 27 45 26 43 28 Q 40 31 32 35 Z" fill="#fef08a"/>
+                <line x1="44" y1="28" x2="46" y2="23" stroke="#d97706" stroke-width="1.2"/>
+                <circle cx="46.5" cy="22.5" r="1" fill="#d97706"/>
+                <line x1="42" y1="28" x2="43" y2="22" stroke="#d97706" stroke-width="1.2"/>
+                <circle cx="43" cy="21.5" r="1" fill="#d97706"/>
+            </svg>
+        </div>
+
+        <div class="bottom-decor bottom-right-decor">
+            <svg viewBox="0 0 100 120">
+                <circle cx="50" cy="55" r="35" fill="url(#fairyGlow)" opacity="0.6"/>
+
+                <defs>
+                    <radialGradient id="fairyGlow" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#f0abfc" stop-opacity="1"/>
+                        <stop offset="100%" stop-color="#a855f7" stop-opacity="0"/>
+                    </radialGradient>
+                    <linearGradient id="wingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+                        <stop offset="50%" stop-color="#e879f9" stop-opacity="0.7"/>
+                        <stop offset="100%" stop-color="#f472b6" stop-opacity="0.6"/>
+                    </linearGradient>
+                </defs>
+
+                <!-- Wings -->
+                <path d="M 45 45 C 20 10 0 35 30 60 C 40 68 45 52 45 45 Z" fill="url(#wingGrad)"/>
+                <path d="M 52 42 C 75 5 100 30 68 58 C 58 66 50 50 52 42 Z" fill="url(#wingGrad)"/>
+                <path d="M 48 52 C 25 55 15 85 38 78 C 45 75 48 60 48 52 Z" fill="url(#wingGrad)"/>
+                <path d="M 52 52 C 75 55 85 85 62 78 C 55 75 52 60 52 52 Z" fill="url(#wingGrad)"/>
+
+                <!-- Fairy body & dress -->
+                <path d="M 46 55 L 35 90 Q 50 98 65 90 L 54 55 Z" fill="#c084fc"/>
+                <path d="M 46 55 Q 50 60 54 55 Q 50 78 35 90 Q 50 92 65 90 Q 50 78 46 55 Z" fill="#e879f9" opacity="0.8"/>
+                <path d="M 44 48 Q 30 42 22 38" fill="none" stroke="#fbcfe8" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M 56 48 Q 68 40 78 32" fill="none" stroke="#fbcfe8" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M 47 44 Q 50 42 53 44 L 54 56 L 46 56 Z" fill="#fbcfe8"/>
+                <circle cx="50" cy="35" r="7" fill="#fbcfe8"/>
+                <path d="M 44 32 C 42 22 58 22 56 32 C 58 38 62 48 60 55 C 57 42 55 35 54 33" fill="#fbbf24"/>
+                
+                <!-- Magic Wand -->
+                <line x1="78" y1="32" x2="88" y2="20" stroke="#fef08a" stroke-width="1.5"/>
+                <polygon points="88,16 90,19 94,20 91,22 92,26 88,23 84,26 85,22 82,20 86,19" fill="#facc15"/>
+            </svg>
+        </div>
+
+    </div>
+
+    <script>
+        /* ----------------------------------------------------
+           1. SLIDER / CAROUSEL LOGIC
+        ---------------------------------------------------- */
+        let currentSlide = 1;
+        const totalSlides = 2;
+
+        function showSlide(index) {
+            if (index > totalSlides) currentSlide = 1;
+            else if (index < 1) currentSlide = totalSlides;
+            else currentSlide = index;
+
+            for (let i = 1; i <= totalSlides; i++) {
+                const page = document.getElementById('page' + i);
+                const dot = document.getElementById('dot' + i);
+                if (page) page.classList.remove('active');
+                if (dot) dot.classList.remove('active');
+            }
+
+            const activePage = document.getElementById('page' + currentSlide);
+            const activeDot = document.getElementById('dot' + currentSlide);
+            if (activePage) activePage.classList.add('active');
+            if (activeDot) activeDot.classList.add('active');
+
+            playSparkleSound(600, 0.08);
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        /* ----------------------------------------------------
+           2. FAIRY WAND CURSOR SPARKLE TRAIL (CANVAS)
+        ---------------------------------------------------- */
+        const canvas = document.getElementById('trail-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class SparkleParticle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 4 + 2;
+                this.speedX = (Math.random() - 0.5) * 2;
+                this.speedY = (Math.random() - 0.5) * 2 - 0.8;
+                this.color = color || ['#f472b6', '#e879f9', '#fef08a', '#c084fc', '#e0aaff'][Math.floor(Math.random() * 5)];
+                this.opacity = 1;
+                this.decay = Math.random() * 0.02 + 0.015;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.opacity -= this.decay;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = Math.max(0, this.opacity);
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        function addParticles(x, y, count = 3) {
+            for (let i = 0; i < count; i++) {
+                particles.push(new SparkleParticle(x, y));
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].opacity <= 0) {
+                    particles.splice(i, 1);
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        window.addEventListener('mousemove', (e) => addParticles(e.clientX, e.clientY, 2));
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches[0]) {
+                addParticles(e.touches[0].clientX, e.touches[0].clientY, 3);
+            }
+        }, { passive: true });
+
+        function popSparkles(event) {
+            const rect = event.currentTarget.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            addParticles(centerX, centerY, 25);
+            playSparkleSound(880, 0.15);
+        }
+
+        /* ----------------------------------------------------
+           3. WEB AUDIO API - MAGICAL SOUND EFFECTS & MUSIC
+        ---------------------------------------------------- */
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playSparkleSound(freq = 800, duration = 0.1) {
+            try {
+                initAudio();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(freq * 1.8, audioCtx.currentTime + duration);
+                
+                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {
+                console.log("Audio no habilitado aún");
+            }
+        }
+
+        function toggleAudio() {
+            const audio = document.getElementById('bgMusic');
+            const icon = document.getElementById('musicIcon');
+            const btn = document.getElementById('musicToggle');
+            
+            if (audio.paused) {
+                initAudio();
+                audio.play().then(() => {
+                    icon.textContent = '🔊';
+                    btn.style.borderColor = '#f472b6';
+                    playSparkleSound(1000, 0.2);
+                }).catch(err => {
+                    console.log("No se pudo reproducir la música:", err);
+                });
+            } else {
+                audio.pause();
+                icon.textContent = '🎵';
+                btn.style.borderColor = '#e879f9';
+            }
+        }
+
+        /* ----------------------------------------------------
+           4. RSVP INTERACTIVE WHATSAPP HANDLER
+        ---------------------------------------------------- */
+        function handleRSVP(event) {
+            popSparkles(event);
+            playSparkleSound(1200, 0.3);
+
+            const phoneNumber = "51999999999";
+            const message = encodeURIComponent("¡Hola! ✨ Me encantaría confirmar mi asistencia para el 1er Cumpleaños de Celeste 👑. ¡Nos vemos en el Bosque Encantado!");
+            
+            setTimeout(() => {
+                window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+            }, 400);
+        }
+    </script>
+</body>
+</html>
