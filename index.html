@@ -63,7 +63,7 @@
             z-index: 9999;
         }
 
-        /* CARCASA PRINCIPAL CON BRILLO LUZ ROSADO-MORADO EN BORDES */
+        /* CARCASA PRINCIPAL */
         .invitation-wrapper {
             background: linear-gradient(180deg, #fbf2ff 0%, #f6e5ff 20%, #ffffff 50%, #f7e8ff 100%);
             width: 100%;
@@ -291,28 +291,114 @@
             100% { transform: scale(1.2); opacity: 1; }
         }
 
+        /* ESTILOS DEL LIBRO INTERACTIVO Y EFECTO DE HOJA DE LIBRO (FLIP 3D) */
         .book-frame {
             position: relative;
             background: #ffffff;
             padding: 8px;
             border-radius: 20px;
-            border: 1.5px solid #f472b6;
-            box-shadow: 0 0 12px rgba(244, 114, 182, 0.3);
+            border: 2px solid #f472b6;
+            box-shadow: 0 0 15px rgba(244, 114, 182, 0.35);
+            perspective: 1200px; /* Habilita el giro 3D */
+            overflow: hidden;
         }
 
         .book-page {
             display: none;
             width: 100%;
+            transform-origin: left center;
+            backface-visibility: hidden;
         }
 
         .book-page.active {
             display: block;
-            animation: fadeIn 0.4s cubic-bezier(0.39, 0.575, 0.565, 1);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0.2; transform: scale(0.98); }
-            to { opacity: 1; transform: scale(1); }
+        /* Animaciones de cambio de página */
+        .book-page.turn-next {
+            display: block;
+            animation: flipPageNext 0.6s cubic-bezier(0.645, 0.045, 0.355, 1.000) forwards;
+        }
+
+        .book-page.turn-prev {
+            display: block;
+            animation: flipPagePrev 0.6s cubic-bezier(0.645, 0.045, 0.355, 1.000) forwards;
+        }
+
+        @keyframes flipPageNext {
+            0% { transform: rotateY(0deg); opacity: 1; }
+            50% { transform: rotateY(-90deg); opacity: 0.5; }
+            100% { transform: rotateY(0deg); opacity: 1; }
+        }
+
+        @keyframes flipPagePrev {
+            0% { transform: rotateY(0deg); opacity: 1; }
+            50% { transform: rotateY(90deg); opacity: 0.5; }
+            100% { transform: rotateY(0deg); opacity: 1; }
+        }
+
+        /* DISEÑO DE LA PORTADA DEL LIBRO DE HADAS */
+        .book-cover {
+            background: linear-gradient(135deg, #3b0764 0%, #581c87 50%, #2e1065 100%);
+            border: 3px solid #facc15;
+            border-radius: 16px;
+            padding: 30px 15px;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 1 / 1;
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(250, 204, 21, 0.3), 0 8px 18px rgba(0,0,0,0.3);
+        }
+
+        .book-cover-border {
+            position: absolute;
+            top: 8px; left: 8px; right: 8px; bottom: 8px;
+            border: 1px dashed #facc15;
+            border-radius: 12px;
+            pointer-events: none;
+        }
+
+        .cover-icon {
+            font-size: 3.5rem;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 0 10px #e879f9);
+        }
+
+        .cover-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.25rem;
+            color: #facc15;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(250, 204, 21, 0.6);
+            margin-bottom: 6px;
+        }
+
+        .cover-subtitle {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2rem;
+            color: #f472b6;
+            margin-bottom: 12px;
+        }
+
+        .open-book-hint {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(250, 204, 21, 0.5);
+            padding: 6px 14px;
+            border-radius: 12px;
+            color: #fef08a;
+            animation: hintPulse 1.8s infinite ease-in-out;
+        }
+
+        @keyframes hintPulse {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.05); opacity: 1; }
         }
 
         .img-wrapper {
@@ -381,7 +467,7 @@
             margin-top: 12px;
             display: flex;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .dot {
@@ -395,7 +481,7 @@
         .dot.active {
             background: #e879f9;
             box-shadow: 0 0 8px #e879f9;
-            width: 24px;
+            width: 22px;
             border-radius: 6px;
         }
 
@@ -545,7 +631,7 @@
             100% { transform: translateY(-8px) rotate(3deg); }
         }
 
-        .floral-corner, .floral-edge {
+        .floral-corner {
             position: absolute;
             z-index: 3;
             pointer-events: none;
@@ -592,10 +678,10 @@
 
         <!-- AUDIO TOGGLE BUTTON & AUDIO ELEMENT -->
         <button class="music-toggle" id="musicToggle" title="Activar/Desactivar Música y Sonidos" onclick="toggleAudio()">
-            <span id="musicIcon">🎵</span>
+            <span id="musicIcon">🔊</span>
         </button>
 
-        <audio id="bgMusic" loop preload="auto">
+        <audio id="bgMusic" loop autoplay preload="auto">
             <source src="assets/musica1.mp3" type="audio/mpeg">
             <source src="assets/musica1.wav" type="audio/wav">
             <source src="assets/musica1.ogg" type="audio/ogg">
@@ -680,17 +766,28 @@
             <div class="badge-pill">✨ ¡CUMPLE SU 1ER AÑITO! ✨</div>
         </header>
 
-        <!-- CAPÍTULO 1: ÁLBUM DE FOTOS -->
+        <!-- CAPÍTULO 1: ÁLBUM DE FOTOS CON PORTADA Y PASO DE HOJA -->
         <div class="story-card">
             <span class="chapter-tag">Capítulo I</span>
-            <h2 class="chapter-title">"El Paso del Tiempo"</h2>
+            <h2 class="chapter-title">"El Libro Mágico"</h2>
             <p class="story-body">
-                Mira cómo ha crecido nuestra pequeña princesa durante este primer año lleno de aventuras y tiernos momentos:
+                Abre las páginas de nuestro libro encantado para revivir los tiernos momentos del primer año de Celeste:
             </p>
 
             <div class="book-frame">
-                <!-- Foto 1 -->
-                <div class="book-page active" id="page1">
+                <!-- Portada del Libro (Página 0) -->
+                <div class="book-page active" id="page0">
+                    <div class="book-cover" onclick="changeSlide(1)">
+                        <div class="book-cover-border"></div>
+                        <div class="cover-icon">📖✨</div>
+                        <h3 class="cover-title">El Cuento de</h3>
+                        <span class="cover-subtitle">Celeste</span>
+                        <div class="open-book-hint">Toca aquí para abrir ➔</div>
+                    </div>
+                </div>
+
+                <!-- Foto 1 (Página 1) -->
+                <div class="book-page" id="page1">
                     <div class="img-wrapper">
                         <img src="assets/foto.jpg" alt="Foto 1 de Celeste" onerror="handleImageError(this, 'placeholder1')">
                         <div id="placeholder1" class="photo-placeholder" style="display: none;">
@@ -700,7 +797,7 @@
                     </div>
                 </div>
 
-                <!-- Foto 2 -->
+                <!-- Foto 2 (Página 2) -->
                 <div class="book-page" id="page2">
                     <div class="img-wrapper">
                         <img src="assets/foto2.jpg" alt="Foto 2 de Celeste" onerror="handleImageError(this, 'placeholder2')">
@@ -711,13 +808,52 @@
                     </div>
                 </div>
 
+                <!-- Foto 3 (Página 3) -->
+                <div class="book-page" id="page3">
+                    <div class="img-wrapper">
+                        <img src="assets/foto3.jpg" alt="Foto 3 de Celeste" onerror="handleImageError(this, 'placeholder3')">
+                        <div id="placeholder3" class="photo-placeholder" style="display: none;">
+                            <span>🌸</span>
+                            <p>TERCERA FOTO</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Foto 4 (Página 4) -->
+                <div class="book-page" id="page4">
+                    <div class="img-wrapper">
+                        <img src="assets/foto4.jpg" alt="Foto 4 de Celeste" onerror="handleImageError(this, 'placeholder4')">
+                        <div id="placeholder4" class="photo-placeholder" style="display: none;">
+                            <span>⭐</span>
+                            <p>CUARTA FOTO</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Foto 5 (Página 5) -->
+                <div class="book-page" id="page5">
+                    <div class="img-wrapper">
+                        <img src="assets/foto5.jpg" alt="Foto 5 de Celeste" onerror="handleImageError(this, 'placeholder5')">
+                        <div id="placeholder5" class="photo-placeholder" style="display: none;">
+                            <span>🎂</span>
+                            <p>QUINTA FOTO</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de navegación -->
                 <button class="arrow left" onclick="changeSlide(-1)">&#10094;</button>
                 <button class="arrow right" onclick="changeSlide(1)">&#10095;</button>
             </div>
 
+            <!-- Indicadores (Dots) para la portada y las 5 fotos -->
             <div class="slider-dots">
-                <span class="dot active" id="dot1" onclick="showSlide(1)"></span>
-                <span class="dot" id="dot2" onclick="showSlide(2)"></span>
+                <span class="dot active" id="dot0" title="Portada" onclick="showSlide(0)"></span>
+                <span class="dot" id="dot1" title="Foto 1" onclick="showSlide(1)"></span>
+                <span class="dot" id="dot2" title="Foto 2" onclick="showSlide(2)"></span>
+                <span class="dot" id="dot3" title="Foto 3" onclick="showSlide(3)"></span>
+                <span class="dot" id="dot4" title="Foto 4" onclick="showSlide(4)"></span>
+                <span class="dot" id="dot5" title="Foto 5" onclick="showSlide(5)"></span>
             </div>
         </div>
 
@@ -731,9 +867,7 @@
                         <stop offset="100%" stop-color="#a855f7" stop-opacity="0.3"/>
                     </linearGradient>
                 </defs>
-                <!-- S-Curve Trail -->
                 <path class="connector-path" d="M 150,0 C 150,30 50,20 50,40 C 50,60 150,40 150,70" />
-                <!-- Sparkling Stars Along Path -->
                 <polygon class="connector-star" points="50,40 52,43 56,44 53,46 54,50 50,47 46,50 47,46 44,44 48,43" />
                 <polygon class="connector-star" points="150,35 151,37 154,38 152,39 152,42 150,40 148,42 148,39 146,38 149,37" style="animation-delay: 0.7s;" />
                 <circle cx="100" cy="30" r="2.5" fill="#fef08a" />
@@ -757,10 +891,9 @@
             </div>
         </div>
 
-        <!-- MAGICAL CONNECTOR 2: ENCHANTED VINE & BLOOMING FLOWERS -->
+        <!-- MAGICAL CONNECTOR 2 -->
         <div class="chapter-connector">
             <svg class="connector-svg" viewBox="0 0 300 70">
-                <!-- Vine Trail -->
                 <path class="connector-path" d="M 150,0 C 150,30 250,20 250,40 C 250,60 150,40 150,70" />
                 <path d="M 250,40 Q 260,30 270,35" fill="none" stroke="#22c55e" stroke-width="2"/>
                 <circle cx="270" cy="35" r="4" fill="#f472b6"/>
@@ -791,7 +924,7 @@
             </div>
         </div>
 
-        <!-- MAGICAL CONNECTOR 3: GOLDEN DUST & FAIRY TRAIL -->
+        <!-- MAGICAL CONNECTOR 3 -->
         <div class="chapter-connector">
             <svg class="connector-svg" viewBox="0 0 300 70">
                 <path class="connector-path" d="M 150,0 C 150,35 150,35 150,70" stroke="#facc15" stroke-width="2.5" />
@@ -801,7 +934,7 @@
             </svg>
         </div>
 
-        <!-- CAPÍTULO FINAL: RSVP (CON HISTORIA CREATIVA) -->
+        <!-- CAPÍTULO FINAL: RSVP -->
         <div class="story-card final-card">
             <span class="chapter-tag">El Gran Final</span>
             <h2 class="chapter-title">"Un Deseo Hecho Realidad"</h2>
@@ -810,12 +943,12 @@
             </p>
 
             <button id="rsvp-btn" class="whatsapp-btn" onclick="handleRSVP(event)">
-                <span>💬</span> CONFIRMAR MI ASISTENCIA
+                CONFIRMA TU ASISTENCIA
             </button>
             <p class="deadline-text">Por favor confirma antes del 10 de Octubre</p>
         </div>
 
-        <!-- BOTTOM DECORATIONS: MUSHROOMS & FAIRY -->
+        <!-- BOTTOM DECORATIONS -->
         <div class="bottom-decor bottom-left-decor">
             <svg viewBox="0 0 100 100">
                 <path d="M 30 90 L 35 55 Q 35 50 40 50 Q 45 50 45 55 L 50 90 Z" fill="#e8d8f8"/>
@@ -828,7 +961,6 @@
                 <path d="M 45 68 Q 62 38 80 68 Q 62 72 45 68 Z" fill="#e879f9"/>
                 <circle cx="62" cy="54" r="2" fill="#ffffff" opacity="0.9"/>
 
-                <!-- Cute Snail -->
                 <path d="M 38 25 C 32 18 20 25 24 33 C 28 38 38 33 34 26 C 32 23 27 26 28 29" fill="none" stroke="#d97706" stroke-width="3" stroke-linecap="round"/>
                 <path d="M 18 36 Q 28 32 40 34 Q 44 32 46 29 C 47 27 45 26 43 28 Q 40 31 32 35 Z" fill="#fef08a"/>
                 <line x1="44" y1="28" x2="46" y2="23" stroke="#d97706" stroke-width="1.2"/>
@@ -854,13 +986,11 @@
                     </linearGradient>
                 </defs>
 
-                <!-- Wings -->
                 <path d="M 45 45 C 20 10 0 35 30 60 C 40 68 45 52 45 45 Z" fill="url(#wingGrad)"/>
                 <path d="M 52 42 C 75 5 100 30 68 58 C 58 66 50 50 52 42 Z" fill="url(#wingGrad)"/>
                 <path d="M 48 52 C 25 55 15 85 38 78 C 45 75 48 60 48 52 Z" fill="url(#wingGrad)"/>
                 <path d="M 52 52 C 75 55 85 85 62 78 C 55 75 52 60 52 52 Z" fill="url(#wingGrad)"/>
 
-                <!-- Fairy body & dress -->
                 <path d="M 46 55 L 35 90 Q 50 98 65 90 L 54 55 Z" fill="#c084fc"/>
                 <path d="M 46 55 Q 50 60 54 55 Q 50 78 35 90 Q 50 92 65 90 Q 50 78 46 55 Z" fill="#e879f9" opacity="0.8"/>
                 <path d="M 44 48 Q 30 42 22 38" fill="none" stroke="#fbcfe8" stroke-width="2.5" stroke-linecap="round"/>
@@ -869,7 +999,6 @@
                 <circle cx="50" cy="35" r="7" fill="#fbcfe8"/>
                 <path d="M 44 32 C 42 22 58 22 56 32 C 58 38 62 48 60 55 C 57 42 55 35 54 33" fill="#fbbf24"/>
                 
-                <!-- Magic Wand -->
                 <line x1="78" y1="32" x2="88" y2="20" stroke="#fef08a" stroke-width="1.5"/>
                 <polygon points="88,16 90,19 94,20 91,22 92,26 88,23 84,26 85,22 82,20 86,19" fill="#facc15"/>
             </svg>
@@ -879,37 +1008,44 @@
 
     <script>
         /* ----------------------------------------------------
-           1. SLIDER / CAROUSEL LOGIC
+           1. BOOK SLIDER & PAGE FLIP LOGIC (0 = Portada, 1..5 = Fotos)
         ---------------------------------------------------- */
-        let currentSlide = 1;
-        const totalSlides = 2;
+        let currentSlide = 0;
+        const totalSlides = 5; // 0 (Portada) + 5 Fotos
 
-        function showSlide(index) {
-            if (index > totalSlides) currentSlide = 1;
-            else if (index < 1) currentSlide = totalSlides;
-            else currentSlide = index;
+        function showSlide(index, direction = 1) {
+            let nextSlide = index;
+            if (nextSlide > totalSlides) nextSlide = 0;
+            if (nextSlide < 0) nextSlide = totalSlides;
 
-            for (let i = 1; i <= totalSlides; i++) {
-                const page = document.getElementById('page' + i);
-                const dot = document.getElementById('dot' + i);
-                if (page) page.classList.remove('active');
-                if (dot) dot.classList.remove('active');
+            const oldPage = document.getElementById('page' + currentSlide);
+            const newPage = document.getElementById('page' + nextSlide);
+            const oldDot = document.getElementById('dot' + currentSlide);
+            const newDot = document.getElementById('dot' + nextSlide);
+
+            if (oldPage) {
+                oldPage.classList.remove('active', 'turn-next', 'turn-prev');
             }
+            if (oldDot) oldDot.classList.remove('active');
 
-            const activePage = document.getElementById('page' + currentSlide);
-            const activeDot = document.getElementById('dot' + currentSlide);
-            if (activePage) activePage.classList.add('active');
-            if (activeDot) activeDot.classList.add('active');
+            if (newPage) {
+                newPage.classList.remove('turn-next', 'turn-prev');
+                // Aplica la animación de pasar la hoja
+                void newPage.offsetWidth; // Trigger reflow
+                newPage.classList.add('active', direction >= 0 ? 'turn-next' : 'turn-prev');
+            }
+            if (newDot) newDot.classList.add('active');
 
-            playSparkleSound(600, 0.08);
+            currentSlide = nextSlide;
+            playSparkleSound(600 + (currentSlide * 100), 0.1);
         }
 
         function changeSlide(direction) {
-            showSlide(currentSlide + direction);
+            showSlide(currentSlide + direction, direction);
         }
 
         /* ----------------------------------------------------
-           2. FAIRY WAND CURSOR SPARKLE TRAIL (CANVAS)
+           2. FAIRY WAND CURSOR SPARKLE TRAIL
         ---------------------------------------------------- */
         const canvas = document.getElementById('trail-canvas');
         const ctx = canvas.getContext('2d');
@@ -986,7 +1122,7 @@
         }
 
         /* ----------------------------------------------------
-           3. WEB AUDIO API - MAGICAL SOUND EFFECTS & MUSIC
+           3. WEB AUDIO API & MÚSICA DE FONDO
         ---------------------------------------------------- */
         let audioCtx = null;
 
@@ -1017,6 +1153,34 @@
             }
         }
 
+        function playAudioAutomatically() {
+            const audio = document.getElementById('bgMusic');
+            const icon = document.getElementById('musicIcon');
+            const btn = document.getElementById('musicToggle');
+
+            if (audio) {
+                initAudio();
+                audio.play().then(() => {
+                    if (icon) icon.textContent = '🔊';
+                    if (btn) btn.style.borderColor = '#f472b6';
+                }).catch(() => {
+                    const startAudioOnInteraction = () => {
+                        initAudio();
+                        audio.play().then(() => {
+                            if (icon) icon.textContent = '🔊';
+                            if (btn) btn.style.borderColor = '#f472b6';
+                        });
+                        window.removeEventListener('click', startAudioOnInteraction);
+                        window.removeEventListener('touchstart', startAudioOnInteraction);
+                    };
+                    window.addEventListener('click', startAudioOnInteraction);
+                    window.addEventListener('touchstart', startAudioOnInteraction);
+                });
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', playAudioAutomatically);
+
         function toggleAudio() {
             const audio = document.getElementById('bgMusic');
             const icon = document.getElementById('musicIcon');
@@ -1039,18 +1203,12 @@
         }
 
         /* ----------------------------------------------------
-           4. RSVP INTERACTIVE WHATSAPP HANDLER
+           4. RSVP LOCAL HANDLER
         ---------------------------------------------------- */
         function handleRSVP(event) {
             popSparkles(event);
             playSparkleSound(1200, 0.3);
-
-            const phoneNumber = "51999999999";
-            const message = encodeURIComponent("¡Hola! ✨ Me encantaría confirmar mi asistencia para el 1er Cumpleaños de Celeste 👑. ¡Nos vemos en el Bosque Encantado!");
-            
-            setTimeout(() => {
-                window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
-            }, 400);
+            alert("¡Gracias! Tu asistencia ha sido confirmada.");
         }
     </script>
 </body>
