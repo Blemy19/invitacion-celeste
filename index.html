@@ -39,6 +39,84 @@
             -webkit-user-select: none;
         }
 
+        /* ==========================================
+           PANTALLA DEL SOBRE / BIENVENIDA (NUEVO)
+           ========================================== */
+        #pantalla-sobre {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle, #f7e8ff 0%, #d8c4e8 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            cursor: pointer;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+            padding: 20px;
+        }
+
+        /* Clase para ocultar el sobre suavemente */
+        #pantalla-sobre.oculto {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .tarjeta-sobre {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 35px 25px;
+            max-width: 360px;
+            width: 100%;
+            text-align: center;
+            border: 2px dashed #c084fc;
+            box-shadow: 0 15px 35px rgba(88, 28, 135, 0.25);
+            animation: pulseSobre 2s infinite alternate ease-in-out;
+        }
+
+        .tarjeta-sobre h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.2rem;
+            color: #6b21a8;
+            margin-bottom: 8px;
+        }
+
+        .tarjeta-sobre p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            color: #581c87;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .icono-sobre {
+            font-size: 3.5rem;
+            margin: 10px 0;
+            display: inline-block;
+        }
+
+        .tap-indicador {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #7e22ce;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-top: 15px;
+            opacity: 0.8;
+        }
+
+        @keyframes pulseSobre {
+            0% { transform: scale(0.98); }
+            100% { transform: scale(1.02); }
+        }
+
+        /* ==========================================
+           ESTILOS GENERALES
+           ========================================== */
         body {
             background: #2a0845;
             background: radial-gradient(circle at center, #3b1359 0%, #1a022d 100%);
@@ -670,6 +748,16 @@
 </head>
 <body>
 
+    <!-- PANTALLA DE BIENVENIDA / SOBRE -->
+    <div id="pantalla-sobre" onclick="abrirInvitacion(event)">
+        <div class="tarjeta-sobre">
+            <h2>Te invitamos a celebrar</h2>
+            <p>Tienes una invitación especial</p>
+            <div class="icono-sobre">✉️️</div>
+            <div class="tap-indicador">Toca la pantalla para abrir</div>
+        </div>
+    </div>
+
     <!-- Canvas for Cursor Fairy Wand Effect -->
     <canvas id="trail-canvas"></canvas>
 
@@ -681,7 +769,7 @@
             <span id="musicIcon">🔊</span>
         </button>
 
-        <audio id="bgMusic" loop autoplay preload="auto">
+        <audio id="bgMusic" loop preload="auto">
             <source src="assets/musica1.mp3" type="audio/mpeg">
             <source src="assets/musica1.wav" type="audio/wav">
             <source src="assets/musica1.ogg" type="audio/ogg">
@@ -1008,6 +1096,19 @@
 
     <script>
         /* ----------------------------------------------------
+           0. ABRIR INVITACIÓN (PANTALLA DE SOBRE)
+        ---------------------------------------------------- */
+        function abrirInvitacion(event) {
+            const pantalla = document.getElementById('pantalla-sobre');
+            if (pantalla) {
+                pantalla.classList.add('oculto');
+            }
+            if (event) popSparkles(event);
+            playSparkleSound(1000, 0.3);
+            playAudioAutomatically();
+        }
+
+        /* ----------------------------------------------------
            1. BOOK SLIDER & PAGE FLIP LOGIC (0 = Portada, 1..5 = Fotos)
         ---------------------------------------------------- */
         let currentSlide = 0;
@@ -1178,8 +1279,6 @@
                 });
             }
         }
-
-        window.addEventListener('DOMContentLoaded', playAudioAutomatically);
 
         function toggleAudio() {
             const audio = document.getElementById('bgMusic');
