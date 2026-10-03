@@ -5,6 +5,18 @@ const photos = [
 
 let currentSlide = 0;
 
+function abrirInvitacion() {
+  // 1. Ocultar la pantalla del sobre
+  const sobre = document.getElementById('pantalla-sobre');
+  sobre.classList.add('oculto');
+
+  // 2. Reproducir la música
+  const musica = document.getElementById('musica-fondo');
+  musica.play().catch(error => {
+    console.log("El navegador bloqueó el reproductor de audio:", error);
+  });
+}
+
 function updateSlide() {
     const imgElement = document.getElementById("slider-img");
     if (imgElement && photos.length > 0) {
